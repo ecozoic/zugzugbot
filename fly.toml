@@ -1,0 +1,9 @@
+# fly.toml app configuration file generated for zugzug on 2023-10-14T09:34:02-07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "zugzug"
+primary_region = "lax"
+
+[build]
