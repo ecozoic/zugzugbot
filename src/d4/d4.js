@@ -38,6 +38,10 @@ function isValidBuildForClass(resolvedBuild, resolvedClass) {
 
 module.exports = function buildResponse(message) {
     const tokens = message.split(' ');
+    if (tokens[0].trim() === 'tierlist') {
+        return 'https://maxroll.gg/d4/tierlists/endgame-tier-list';
+    }
+    
     if (tokens.length < 2) {
         return 'Invalid command -- use zz d4 {class} {build}';
     }

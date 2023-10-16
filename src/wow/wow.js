@@ -53,6 +53,10 @@ function isValidSpecForClass(resolvedSpec, resolvedClass) {
 
 module.exports = function buildResponse(message) {
     const tokens = message.split(' ');
+    if (tokens[0].trim() === 'tierlist') {
+        return 'https://www.wowhead.com/guide/classes/tier-lists/dps-rankings-raids';
+    }
+    
     if (tokens.length < 2) {
         return 'Invalid command -- use zz {class} {spec} {path: optional}';
     }
