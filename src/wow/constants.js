@@ -1,4 +1,4 @@
-export const CLASSES = {
+const CLASSES = {
     DeathKnight: 'death-knight',
     DemonHunter: 'demon-hunter',
     Druid: 'druid',
@@ -14,9 +14,9 @@ export const CLASSES = {
     Warrior: 'warrior',
 };
 
-export const VALID_CLASSES = new Set(Object.values(CLASSES));
+const VALID_CLASSES = new Set(Object.values(CLASSES));
 
-export const CLASS_ALIAS_MAP = new Map([
+const CLASS_ALIAS_MAP = new Map([
     ['dk', CLASSES.DeathKnight],
     ['dh', CLASSES.DemonHunter],
     ['drood', CLASSES.Druid],
@@ -28,21 +28,21 @@ export const CLASS_ALIAS_MAP = new Map([
     ['warr', CLASSES.Warrior],
 ]);
 
-export const PATHS = {
+const PATHS = {
     Builds: 'builds',
     Rotation: 'rotation',
     Stats: 'stats',
     BiS: 'bis',
 };
 
-export const PATH_MAP = new Map([
+const PATH_MAP = new Map([
     [PATHS.Builds, 'talent-builds-pve-{role}'],
     [PATHS.Rotation, 'rotation-cooldowns-pve-{role}'],
     [PATHS.Stats, 'stats-priority-pve-{role}'],
     [PATHS.BiS, 'bis-gear'],
 ]);
 
-export const SPECS = {
+const SPECS = {
     // dk
     Blood: 'blood',
     Frost: 'frost',
@@ -109,9 +109,9 @@ export const SPECS = {
     // Protection: 'protection',
 };
 
-export const VALID_SPECS = new Set(Object.values(SPECS));
+const VALID_SPECS = new Set(Object.values(SPECS));
 
-export const SPEC_ALIAS_MAP = new Map([
+const SPEC_ALIAS_MAP = new Map([
     // dk
     ['uh', SPECS.Unholy],
 
@@ -161,13 +161,13 @@ export const SPEC_ALIAS_MAP = new Map([
     // ['prot', SPECS.Protection],
 ]);
 
-export const ROLES = {
+const ROLES = {
     Tank: 'tank',
     DPS: 'dps',
     Healer: 'healer',
 };
 
-export const SPEC_ROLE_MAP = new Map([
+const SPEC_ROLE_MAP = new Map([
     // dk
     [SPECS.Blood, ROLES.Tank],
     [SPECS.Frost, ROLES.DPS],
@@ -234,18 +234,81 @@ export const SPEC_ROLE_MAP = new Map([
     // [SPECS.Protection, ROLES.Tank],
 ]);
 
-export const SPEC_CLASS_MAP = new Map([
-    [CLASSES.DeathKnight, new Set([SPECS.Blood, SPECS.Frost, SPECS.Unholy])],
-    [CLASSES.DemonHunter, new Set([SPECS.Havoc, SPECS.Vengeance])],
-    [CLASSES.Druid, new Set([SPECS.Balance, SPECS.Feral, SPECS.Guardian, SPECS.Restoration])],
-    [CLASSES.Evoker, new Set([SPECS.Devastation, SPECS.Preservation, SPECS.Augmentation])],
-    [CLASSES.Hunter, new Set([SPECS.BeastMastery, SPECS.Marksmanship, SPECS.Survival])],
-    [CLASSES.Mage, new Set([SPECS.Arcane, SPECS.Fire, SPECS.Frost])],
-    [CLASSES.Monk, new Set([SPECS.Brewmaster, SPECS.Mistweaver, SPECS.Windwalker])],
-    [CLASSES.Paladin, new Set([SPECS.Holy, SPECS.Protection, SPECS.Retribution])],
-    [CLASSES.Priest, new Set([SPECS.Discipline, SPECS.Holy, SPECS.Shadow])],
-    [CLASSES.Rogue, new Set([SPECS.Assassination, SPECS.Outlaw, SPECS.Subtlety])],
-    [CLASSES.Shaman, new Set([SPECS.Elemental, SPECS.Enhancement, SPECS.Restoration])],
-    [CLASSES.Warlock, new Set([SPECS.Affliction, SPECS.Demonology, SPECS.Destruction])],
-    [CLASSES.Warrior, new Set([SPECS.Arms, SPECS.Fury, SPECS.Protection])],
+const SPEC_CLASS_MAP = new Map([
+    [CLASSES.DeathKnight, new Set([
+        SPECS.Blood,
+        SPECS.Frost,
+        SPECS.Unholy,
+    ])],
+    [CLASSES.DemonHunter, new Set([
+        SPECS.Havoc,
+        SPECS.Vengeance,
+    ])],
+    [CLASSES.Druid, new Set([
+        SPECS.Balance,
+        SPECS.Feral,
+        SPECS.Guardian,
+        SPECS.Restoration,
+    ])],
+    [CLASSES.Evoker, new Set([
+        SPECS.Devastation,
+        SPECS.Preservation,
+        SPECS.Augmentation,
+    ])],
+    [CLASSES.Hunter, new Set([
+        SPECS.BeastMastery,
+        SPECS.Marksmanship,
+        SPECS.Survival,
+    ])],
+    [CLASSES.Mage, new Set([
+        SPECS.Arcane,
+        SPECS.Fire,
+        SPECS.Frost,
+    ])],
+    [CLASSES.Monk, new Set([
+        SPECS.Brewmaster,
+        SPECS.Mistweaver,
+        SPECS.Windwalker,
+    ])],
+    [CLASSES.Paladin, new Set([
+        SPECS.Holy,
+        SPECS.Protection,
+        SPECS.Retribution,
+    ])],
+    [CLASSES.Priest, new Set([
+        SPECS.Discipline,
+        SPECS.Holy,
+        SPECS.Shadow,
+    ])],
+    [CLASSES.Rogue, new Set([
+        SPECS.Assassination,
+        SPECS.Outlaw,
+        SPECS.Subtlety,
+    ])],
+    [CLASSES.Shaman, new Set([
+        SPECS.Elemental,
+        SPECS.Enhancement,
+        SPECS.Restoration,
+    ])],
+    [CLASSES.Warlock, new Set([
+        SPECS.Affliction,
+        SPECS.Demonology,
+        SPECS.Destruction,
+    ])],
+    [CLASSES.Warrior, new Set([
+        SPECS.Arms,
+        SPECS.Fury,
+        SPECS.Protection,
+    ])],
 ]);
+
+module.exports = {
+    VALID_CLASSES,
+    CLASS_ALIAS_MAP,
+    VALID_SPECS,
+    SPEC_ALIAS_MAP,
+    PATHS,
+    PATH_MAP,
+    SPEC_ROLE_MAP,
+    SPEC_CLASS_MAP,  
+};
