@@ -41,6 +41,10 @@ module.exports = function buildResponse(message) {
     if (tokens[0].trim() === 'tierlist') {
         return 'https://maxroll.gg/d4/tierlists/endgame-tier-list';
     }
+
+    if (tokens[0].trim() == 'nm') {
+        return 'https://maxroll.gg/d4/tierlists/nightmare-dungeon-tier-lists';
+    }
     
     if (tokens.length < 2) {
         return 'Invalid command -- use zz d4 {class} {build}';

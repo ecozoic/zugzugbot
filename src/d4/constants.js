@@ -19,15 +19,12 @@ const BUILDS = {
     // barb
     DoubleSwing: 'double-swing',
     HammerOfTheAncients: 'hammer-of-the-ancients',
-    // Leapquake: 'leapquake',
-    // Rend: 'rend',
     Thorns: 'thorns',
-    // Upheaval: 'upheaval',
+    Upheaval: 'upheaval',
     WalkingArsenal: 'walking-arsenal',
     Whirlwind: 'whirlwind',
 
     // druid
-    // Companion: 'companion',
     LightningShred: 'lightning-shred',
     LightningStorm: 'lightning-storm',
     PoisonShred: 'poison-shred',
@@ -52,7 +49,7 @@ const BUILDS = {
     DeathTrap: 'death-trap',
     Flurry: 'flurry',
     FlurryRapidFire: 'flurry-rapid-fire',
-    // RainOfArrows: 'rain-of-arrows',
+    RainOfArrows: 'rain-of-arrows',
     RapidFire: 'rapid-fire',
     PenetratingShot: 'penetrating-shot',
     TwistingBlades: 'twisting-blades',
@@ -79,6 +76,7 @@ const BUILD_ALIAS_MAP = new Map([
 
     // necro
     ['blight-ce', BUILDS.BlightCorpseExplosion],
+    ['bloodmist', BUILDS.Infinimist],
 
     // rogue
     ['tb', BUILDS.TwistingBlades],
@@ -92,15 +90,12 @@ const BUILD_CLASS_MAP = new Map([
     [CLASSES.Barbarian, new Set([
         BUILDS.DoubleSwing,
         BUILDS.HammerOfTheAncients,
-        // BUILDS.Leapquake,
-        // BUILDS.Rend
         BUILDS.Thorns,
-        // BUILDS.Upheaval
+        BUILDS.Upheaval,
         BUILDS.WalkingArsenal,
         BUILDS.Whirlwind,
     ])],
     [CLASSES.Druid, new Set([
-        // BUILDS.Companion
         BUILDS.LightningShred,
         BUILDS.LightningStorm,
         BUILDS.PoisonShred,
@@ -125,7 +120,7 @@ const BUILD_CLASS_MAP = new Map([
         BUILDS.DeathTrap,
         BUILDS.Flurry,
         BUILDS.FlurryRapidFire,
-        // BUILDS.RainOfArrows
+        BUILDS.RainOfArrows,
         BUILDS.RapidFire,
         BUILDS.PenetratingShot,
         BUILDS.TwistingBlades,

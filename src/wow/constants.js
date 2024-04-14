@@ -29,17 +29,21 @@ const CLASS_ALIAS_MAP = new Map([
 ]);
 
 const PATHS = {
+    Guide: 'guide',
     Builds: 'builds',
     Rotation: 'rotation',
     Stats: 'stats',
     BiS: 'bis',
+    Enchants: 'enchants',
 };
 
 const PATH_MAP = new Map([
-    [PATHS.Builds, 'talent-builds-pve-{role}'],
-    [PATHS.Rotation, 'rotation-cooldowns-pve-{role}'],
-    [PATHS.Stats, 'stats-priority-pve-{role}'],
-    [PATHS.BiS, 'bis-gear'],
+    [PATHS.Guide, 'guide'],
+    [PATHS.Builds, 'spec-builds-talents'],
+    [PATHS.Rotation, 'rotation-cooldowns-abilities'],
+    [PATHS.Stats, 'stat-priority'],
+    [PATHS.BiS, 'gear-best-in-slot'],
+    [PATHS.Enchants, 'gems-enchants-consumables'],
 ]);
 
 const SPECS = {
@@ -164,7 +168,7 @@ const SPEC_ALIAS_MAP = new Map([
 const ROLES = {
     Tank: 'tank',
     DPS: 'dps',
-    Healer: 'healer',
+    Healer: 'healing',
 };
 
 const SPEC_ROLE_MAP = new Map([

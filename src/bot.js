@@ -16,9 +16,9 @@ const client = new Client({
 });
 
 client.on(Events.MessageCreate, async message => {
-    if (message.content.startsWith('zz ')) {
+    if (message.content.startsWith('/zz')) {
         try {
-            const content = message.content.substring(3);
+            const content = message.content.substring(4);
             let response = '';
 
             if (content.startsWith('d4 ')) {
@@ -31,9 +31,11 @@ client.on(Events.MessageCreate, async message => {
 
             console.log(response);
 
+            if (response != null) {
             client.channels
                 .fetch(message.channelId)
                 .then(channel => channel.send(response));
+            }
         } catch (e) {
             console.log(e.message);
             client.channels

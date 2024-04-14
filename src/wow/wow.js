@@ -9,7 +9,7 @@ const {
     SPEC_CLASS_MAP,
 } = require('./constants.js');
 
-const TEMPLATE = 'https://www.wowhead.com/guide/classes/{class}/{spec}/{path}';
+const TEMPLATE = 'https://www.icy-veins.com/wow/{spec}-{class}-pve-{role}-{path}';
 
 function resolveClass(classToken) {
     if (VALID_CLASSES.has(classToken)) {
@@ -54,7 +54,7 @@ function isValidSpecForClass(resolvedSpec, resolvedClass) {
 module.exports = function buildResponse(message) {
     const tokens = message.split(' ');
     if (tokens[0].trim() === 'tierlist') {
-        return 'https://www.wowhead.com/guide/classes/tier-lists/dps-rankings-raids';
+        return 'https://www.icy-veins.com/wow/tier-lists';
     }
     
     if (tokens.length < 2) {
@@ -65,7 +65,7 @@ module.exports = function buildResponse(message) {
 
     const classToken = tokens[0];
     const specToken = tokens[1];
-    const pathToken = tokens.length > 2 ? tokens[2] : PATHS.Builds;
+    const pathToken = tokens.length > 2 ? tokens[2] : PATHS.Guide;
 
     const resolvedClass = resolveClass(classToken);
     if (resolvedClass == null) {
