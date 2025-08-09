@@ -2,7 +2,6 @@ require('dotenv').config();
 
 const {Client, Events, GatewayIntentBits} = require('discord.js');
 
-const d4 = require('./d4/d4.js');
 const wow = require('./wow/wow.js');
 
 const token = process.env.BOT_TOKEN;
@@ -19,22 +18,18 @@ client.on(Events.MessageCreate, async message => {
     if (message.content.startsWith('/zz')) {
         try {
             const content = message.content.substring(4);
-            let response = '';
-
-            if (content.startsWith('d4 ')) {
-                response = d4(content.substring(3));
-            } else if (content.startsWith('wow ')) {
-                response = wow(content.substring(4));
-            } else {
-                response = wow(content);
-            }
+            client.channels
+                .fetch(message.channelId)
+                .then(channel => channel.send('Thinking... work is da poop!'));
+                
+            const response = await wow(content);
 
             console.log(response);
 
             if (response != null) {
-            client.channels
-                .fetch(message.channelId)
-                .then(channel => channel.send(response));
+                client.channels
+                    .fetch(message.channelId)
+                    .then(channel => channel.send(response));
             }
         } catch (e) {
             console.log(e.message);
