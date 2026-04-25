@@ -42,6 +42,29 @@ ${'word '.repeat(50)}`;
     });
   });
 
+  describe('path/frontmatter game match', () => {
+    it('throws when path implies a different game than frontmatter', () => {
+      const md = `---\ngame: diablo\n---\n\n## Body\n\n${'word '.repeat(40)}`;
+      expect(() => chunk(md, 'wow/misfiled.md')).toThrow(
+        /frontmatter says game: 'diablo' but path implies 'wow'/,
+      );
+    });
+
+    it('accepts a file at top-level kb/ (no game folder)', () => {
+      const md = `---\ngame: wow\n---\n\n## Body\n\n${'word '.repeat(40)}`;
+      const chunks = chunk(md, 'general-tips.md');
+      expect(chunks).toHaveLength(1);
+      expect(chunks[0]!.metadata.game).toBe('wow');
+    });
+
+    it('accepts a file under an unknown intermediate folder', () => {
+      const md = `---\ngame: wow\n---\n\n## Body\n\n${'word '.repeat(40)}`;
+      const chunks = chunk(md, 'archived/old-rotation.md');
+      expect(chunks).toHaveLength(1);
+      expect(chunks[0]!.metadata.game).toBe('wow');
+    });
+  });
+
   describe('Obsidian syntax stripping', () => {
     it('strips bare wikilinks', () => {
       const md = `---\ngame: wow\n---\n\n## Body\n\nSee [[Wake of Ashes]] for details. ${'word '.repeat(40)}`;

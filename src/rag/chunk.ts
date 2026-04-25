@@ -27,6 +27,9 @@ const GAMES: readonly Game[] = ['wow', 'diablo', 'ff14'];
  * Pure function: markdown string + filename → array of embeddable chunks.
  *
  * - Parses frontmatter (gray-matter); throws if `game` is missing/invalid
+ * - If the file lives under a known game folder (e.g. `kb/wow/...`),
+ *   the frontmatter `game` MUST match the folder name — catches
+ *   path/frontmatter mismatches at build time
  * - Strips Obsidian wikilinks `[[x]]` / `[[x|y]]`
  * - Drops image embeds (markdown + Obsidian syntax)
  * - Splits body on H2/H3 boundaries; further splits oversized sections
@@ -41,6 +44,21 @@ export function chunk(rawMd: string, sourceFile: string): Chunk[] {
   if (!isGame(game)) {
     throw new Error(
       `${sourceFile}: missing or invalid 'game' frontmatter (got ${JSON.stringify(game)}; must be wow | diablo | ff14)`,
+    );
+  }
+
+  // sourceFile is the relative path from kb/ — glob always returns
+  // forward-slash paths regardless of OS. If the first segment is a
+  // known game, require it to match the frontmatter; if it isn't (e.g.
+  // a top-level kb/foo.md), trust the frontmatter alone.
+  const pathGame = sourceFile.split('/')[0];
+  if (
+    pathGame &&
+    (GAMES as readonly string[]).includes(pathGame) &&
+    pathGame !== game
+  ) {
+    throw new Error(
+      `${sourceFile}: frontmatter says game: '${game}' but path implies '${pathGame}'. Either fix the frontmatter or move the file.`,
     );
   }
 
