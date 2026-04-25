@@ -23,3 +23,16 @@ function loadMap(): Record<string, Game> {
 export function getGameForChannel(channelId: string): Game | null {
   return loadMap()[channelId] ?? null;
 }
+
+/**
+ * Returns every (channelId, game) pair the bot is configured for.
+ * Used to render the "I'm not set up here, try these channels"
+ * fallback message dynamically — channelIds become clickable
+ * channel mentions in Discord (`<#id>` syntax).
+ */
+export function listMappedChannels(): Array<{ channelId: string; game: Game }> {
+  return Object.entries(loadMap()).map(([channelId, game]) => ({
+    channelId,
+    game,
+  }));
+}

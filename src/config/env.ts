@@ -6,8 +6,7 @@ const schema = z.object({
   DISCORD_CLIENT_ID: z.string().min(1),
   DISCORD_GUILD_ID: z.string().optional(), // dev: register guild-scoped commands for instant updates
   CHANNEL_GAME_MAP: z.string().optional(), // JSON; parsed in channels.ts
-  // Phase 2+ vars are intentionally NOT here yet.
-  // ANTHROPIC_API_KEY, VOYAGE_API_KEY → added in Phase 2/3
+  ANTHROPIC_API_KEY: z.string().min(1).startsWith('sk-ant-'),
 });
 
 export type Env = z.infer<typeof schema>;
