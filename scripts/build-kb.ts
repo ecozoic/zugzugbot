@@ -1,5 +1,5 @@
 import { glob } from 'glob';
-import { readFile } from 'node:fs/promises';
+import { readFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { chunk, type Chunk } from '../src/rag/chunk.js';
 import { embedDocuments } from '../src/rag/embed.js';
@@ -9,6 +9,11 @@ const KB_ROOT = 'kb';
 const INDEX_DIR = 'data/vectra';
 
 async function main(): Promise<void> {
+  // Wipe the existing index before rebuilding. Vectra's insertItem
+  // appends — without this, every re-run would duplicate every chunk
+  // into the index, over-weighting them at retrieval time.
+  await rm(INDEX_DIR, { recursive: true, force: true });
+
   console.log(`Scanning ${KB_ROOT}/ for markdown files...`);
   const files = await glob('**/*.md', { cwd: KB_ROOT });
   if (files.length === 0) {
@@ -44,7 +49,7 @@ async function main(): Promise<void> {
     );
   }
 
-  console.log(`Writing index to ${INDEX_DIR}/...`);
+  console.log(`Writing fresh index to ${INDEX_DIR}/...`);
   const index = await createOrLoadIndex(INDEX_DIR);
   await addChunks(
     index,
