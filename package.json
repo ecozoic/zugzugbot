@@ -1,21 +1,37 @@
 {
   "name": "zugzugbot",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "2.0.0",
+  "description": "Multi-game RAG Discord bot for our friends server",
+  "main": "dist/index.js",
+  "type": "module",
+  "engines": { "node": ">=20" },
   "scripts": {
-    "start": "node src/bot.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "register": "tsx scripts/register-commands.ts",
+    "lint": "eslint src scripts",
+    "format": "prettier --write src scripts",
+    "format:check": "prettier --check src scripts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "discord.js": "^14.13.0",
-    "dotenv": "^16.3.1",
-    "openai": "^5.12.2"
+    "@anthropic-ai/sdk": "^0.30.0",
+    "discord.js": "^14.16.0",
+    "dotenv": "^16.4.0",
+    "zod": "^3.23.0"
   },
   "devDependencies": {
-    "@flydotio/dockerfile": "^0.4.10"
+    "@flydotio/dockerfile": "^0.5.0",
+    "@types/node": "^20.14.0",
+    "@typescript-eslint/eslint-plugin": "^7.16.0",
+    "@typescript-eslint/parser": "^7.16.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.3.0",
+    "tsx": "^4.16.0",
+    "typescript": "^5.5.0",
+    "vitest": "^1.6.0"
   }
 }
