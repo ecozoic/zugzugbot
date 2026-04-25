@@ -16,6 +16,7 @@ describe('listMappedChannels', () => {
     process.env.BOT_TOKEN = 'test';
     process.env.DISCORD_CLIENT_ID = 'test';
     process.env.ANTHROPIC_API_KEY = 'sk-ant-test';
+    process.env.VOYAGE_API_KEY = 'pa-test';
     const { listMappedChannels } = await import('../channels.js');
     expect(listMappedChannels()).toEqual([]);
   });
@@ -29,6 +30,7 @@ describe('listMappedChannels', () => {
     process.env.BOT_TOKEN = 'test';
     process.env.DISCORD_CLIENT_ID = 'test';
     process.env.ANTHROPIC_API_KEY = 'sk-ant-test';
+    process.env.VOYAGE_API_KEY = 'pa-test';
     const { listMappedChannels } = await import('../channels.js');
     expect(listMappedChannels()).toEqual([
       { channelId: '111', game: 'wow' },
