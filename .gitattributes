@@ -1,0 +1,30 @@
+# Normalize all text files to LF in the repo and on checkout.
+# This project deploys to Linux (Fly.io) and devs work on macOS + Windows;
+# enforcing LF everywhere avoids the "format wants CRLF / git stored LF"
+# loop that surfaces as ghost-modified files in `git status`.
+
+* text=auto eol=lf
+
+# Explicit text — belt and suspenders for files Git might otherwise
+# detect as binary (rare, but happens with certain UTF encodings).
+*.ts        text eol=lf
+*.js        text eol=lf
+*.cjs       text eol=lf
+*.mjs       text eol=lf
+*.json      text eol=lf
+*.md        text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.toml      text eol=lf
+Dockerfile  text eol=lf
+.env*       text eol=lf
+.gitignore  text eol=lf
+.prettierrc text eol=lf
+
+# Binary — never apply line-ending normalization.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.pdf  binary
