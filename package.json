@@ -14,6 +14,7 @@
     "register": "tsx scripts/register-commands.ts",
     "build:kb": "tsx scripts/build-kb.ts",
     "sync:blizz:abilities": "tsx scripts/sync-blizz-abilities.ts",
+    "debug:wcl": "tsx scripts/debug-wcl-fetch.ts",
     "lint": "eslint src scripts",
     "format": "prettier --write src scripts",
     "format:check": "prettier --check src scripts",

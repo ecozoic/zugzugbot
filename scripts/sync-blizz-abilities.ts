@@ -3,9 +3,11 @@ import {
   walkCatalog,
   type SourceType,
   type SpellRef,
+  type TalentRef,
 } from '../src/sync/walk-catalog.js';
 import { writeAbilityFile } from '../src/sync/write-abilities.js';
 import { writeSpellIndex } from '../src/sync/build-spell-index.js';
+import { writeTalentIndex } from '../src/sync/build-talent-index.js';
 import { loadOverrides } from '../src/sync/load-overrides.js';
 import { fetchStatic } from '../src/apis/blizzard/index.js';
 import type { SpellResponse } from '../src/apis/blizzard/index.js';
@@ -15,6 +17,7 @@ interface Args {
   specFilter?: string;
   dryRun: boolean;
   overridesOnly: boolean;
+  talentIndexOnly: boolean;
   patch: string;
 }
 
@@ -27,6 +30,7 @@ function parseArgs(): Args {
   const args: Args = {
     dryRun: false,
     overridesOnly: false,
+    talentIndexOnly: false,
     patch: process.env.WOW_PATCH ?? DEFAULT_PATCH,
   };
   for (let i = 0; i < argv.length; i++) {
@@ -49,6 +53,8 @@ function parseArgs(): Args {
       args.dryRun = true;
     } else if (arg === '--overrides-only') {
       args.overridesOnly = true;
+    } else if (arg === '--talent-index-only') {
+      args.talentIndexOnly = true;
     } else if (arg === '--patch') {
       const next = argv[++i];
       if (!next) {
@@ -68,12 +74,42 @@ function parseArgs(): Args {
     );
     process.exit(1);
   }
+  if (
+    args.talentIndexOnly &&
+    (args.classFilter || args.specFilter || args.overridesOnly)
+  ) {
+    console.error(
+      '--talent-index-only requires a full unfiltered walk; cannot combine with --class, --spec, or --overrides-only.',
+    );
+    process.exit(1);
+  }
   return args;
 }
 
 async function main(): Promise<void> {
   const args = parseArgs();
   const syncedAt = new Date().toISOString();
+
+  if (args.talentIndexOnly) {
+    console.log(
+      '--talent-index-only: walking talent trees, writing data/blizz/talent-index.json only.',
+    );
+    const { catalog: walkedCatalog, talents } = await walkCatalog({});
+    console.log(
+      `Talent walk: ${walkedCatalog.size} spells / ${talents.size} talents discovered.`,
+    );
+    if (!args.dryRun) {
+      await writeTalentIndex(talents, { syncedAt, patch: args.patch });
+      console.log(
+        `Wrote data/blizz/talent-index.json (${talents.size} entries). ` +
+          'Skipped ability files + spell-index.',
+      );
+    } else {
+      console.log('(dry-run: no files written)');
+    }
+    return;
+  }
+
   const filtered = Boolean(
     args.classFilter || args.specFilter || args.overridesOnly,
   );
@@ -85,6 +121,7 @@ async function main(): Promise<void> {
     .filter(Boolean)
     .join(', ');
   let catalog: Map<number, SpellRef>;
+  let walkedTalents: Map<number, TalentRef> = new Map();
   let talentCount = 0;
   if (args.overridesOnly) {
     console.log(
@@ -95,14 +132,18 @@ async function main(): Promise<void> {
     console.log(
       `Walking Blizzard catalog${filterDesc ? ` (${filterDesc})` : ''}...`,
     );
-    catalog = await walkCatalog({
+    const result = await walkCatalog({
       ...(args.classFilter !== undefined
         ? { classFilter: args.classFilter }
         : {}),
       ...(args.specFilter !== undefined ? { specFilter: args.specFilter } : {}),
     });
+    catalog = result.catalog;
+    walkedTalents = result.talents;
     talentCount = catalog.size;
-    console.log(`Talent walk: ${talentCount} spells discovered.`);
+    console.log(
+      `Talent walk: ${talentCount} spells / ${walkedTalents.size} talents discovered.`,
+    );
   }
 
   // Pass 2: overrides — fetch each spell + media, register in catalog
@@ -194,9 +235,10 @@ async function main(): Promise<void> {
 
   if (!args.dryRun && !filtered) {
     await writeSpellIndex(catalog, { syncedAt, patch: args.patch });
+    await writeTalentIndex(walkedTalents, { syncedAt, patch: args.patch });
   } else if (!args.dryRun && filtered) {
     console.log(
-      '\n[skipped index write — filtered run; rerun without filters to refresh spell-index.json]',
+      '\n[skipped index write — filtered run; rerun without filters to refresh spell-index.json + talent-index.json]',
     );
   }
 

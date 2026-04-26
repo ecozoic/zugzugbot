@@ -10,6 +10,8 @@ const schema = z.object({
   VOYAGE_API_KEY: z.string().min(1).startsWith('pa-'),
   BLIZZARD_CLIENT_ID: z.string().min(1).optional(),
   BLIZZARD_CLIENT_SECRET: z.string().min(1).optional(),
+  WCL_CLIENT_ID: z.string().min(1).optional(),
+  WCL_CLIENT_SECRET: z.string().min(1).optional(),
 });
 
 export type Env = z.infer<typeof schema>;

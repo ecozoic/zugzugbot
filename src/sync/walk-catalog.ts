@@ -30,16 +30,44 @@ export interface SpellRef {
   powerCost?: string;
 }
 
+/**
+ * Talent metadata captured alongside spells during the walk. Phase
+ * 5c needs talent_id → talent_name resolution because WCL's
+ * CombatantInfo events return talent IDs, not names. We have the
+ * data inline at walk time (from `tooltip.talent.{id, name}`) — just
+ * a matter of keeping it.
+ */
+export interface TalentRef {
+  talentId: number;
+  talentName: string;
+  className: string;
+  specs: string[];
+  tree: SourceType;
+  heroTree?: string;
+  nodeId: number;
+  spellId?: number;
+}
+
 export interface WalkOptions {
   classFilter?: string;
   specFilter?: string;
 }
 
-/** Returns map keyed by spell_id with merged refs across the walk. */
-export async function walkCatalog(
-  opts: WalkOptions,
-): Promise<Map<number, SpellRef>> {
+export interface WalkResult {
+  catalog: Map<number, SpellRef>;
+  talents: Map<number, TalentRef>;
+}
+
+/**
+ * Walk the talent tree per (class, spec) and accumulate two maps:
+ *   - catalog: spell_id → SpellRef (with full tooltip data)
+ *   - talents: talent_id → TalentRef (id, name, tree position)
+ *
+ * Both are populated in the same pass so we don't double-fetch.
+ */
+export async function walkCatalog(opts: WalkOptions): Promise<WalkResult> {
   const catalog = new Map<number, SpellRef>();
+  const talents = new Map<number, TalentRef>();
   const classIndex = await fetchStatic<PlayableClassIndexResponse>(
     '/data/wow/playable-class/index',
   );
@@ -85,20 +113,26 @@ export async function walkCatalog(
         continue;
       }
 
-      walkNodes(catalog, tree.class_talent_nodes, {
+      walkNodes(catalog, talents, tree.class_talent_nodes, {
         className,
         specName,
         sourceType: 'class_talent',
       });
-      walkNodes(catalog, tree.spec_talent_nodes, {
+      walkNodes(catalog, talents, tree.spec_talent_nodes, {
         className,
         specName,
         sourceType: 'spec_talent',
       });
-      walkHeroTrees(catalog, tree.hero_talent_trees, className, specName);
+      walkHeroTrees(
+        catalog,
+        talents,
+        tree.hero_talent_trees,
+        className,
+        specName,
+      );
     }
   }
-  return catalog;
+  return { catalog, talents };
 }
 
 function parseTalentTreeIdFromHref(
@@ -119,6 +153,7 @@ interface NodeWalkContext {
 
 function walkNodes(
   catalog: Map<number, SpellRef>,
+  talents: Map<number, TalentRef>,
   nodes: TalentNode[] | undefined,
   ctx: NodeWalkContext,
 ): void {
@@ -159,6 +194,18 @@ function walkNodes(
             ? { powerCost: t.spell_tooltip.power_cost }
             : {}),
         });
+        if (t.talent?.id !== undefined && t.talent.name) {
+          registerTalent(talents, {
+            talentId: t.talent.id,
+            talentName: t.talent.name,
+            className: ctx.className,
+            specs: [ctx.specName],
+            tree: ctx.sourceType,
+            ...(ctx.heroTree !== undefined ? { heroTree: ctx.heroTree } : {}),
+            nodeId: node.id,
+            spellId: spell.id,
+          });
+        }
       }
     }
   }
@@ -166,6 +213,7 @@ function walkNodes(
 
 function walkHeroTrees(
   catalog: Map<number, SpellRef>,
+  talents: Map<number, TalentRef>,
   heroTrees: HeroTalentTree[] | undefined,
   className: string,
   specName: string,
@@ -173,7 +221,7 @@ function walkHeroTrees(
   if (!heroTrees) return;
   for (const hero of heroTrees) {
     const heroTreeKey = hero.name.toLowerCase().replace(/\s+/g, '-');
-    walkNodes(catalog, hero.hero_talent_nodes, {
+    walkNodes(catalog, talents, hero.hero_talent_nodes, {
       className,
       specName,
       sourceType: 'hero_talent',
@@ -189,6 +237,21 @@ const SOURCE_TYPE_PRIORITY: Record<SourceType, number> = {
   spec_talent: 3,
   hero_talent: 4,
 };
+
+/**
+ * Idempotent insert into the talent map. Multi-rank talents fire
+ * walkNodes once per rank — we keep the first occurrence and merge
+ * specs across spec-walks of the same class.
+ */
+function registerTalent(talents: Map<number, TalentRef>, ref: TalentRef): void {
+  const existing = talents.get(ref.talentId);
+  if (!existing) {
+    talents.set(ref.talentId, ref);
+    return;
+  }
+  const mergedSpecs = Array.from(new Set([...existing.specs, ...ref.specs]));
+  talents.set(ref.talentId, { ...existing, specs: mergedSpecs });
+}
 
 /**
  * Idempotent insert into the catalog. Exported so the overrides pass
