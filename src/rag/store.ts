@@ -1,4 +1,5 @@
 import { LocalIndex } from 'vectra';
+import path from 'node:path';
 import type { Chunk, ChunkMetadata } from './chunk.js';
 
 export interface IndexedChunk extends Chunk {
@@ -58,4 +59,32 @@ export async function search(
     const { text, ...metadata } = meta;
     return { text, metadata, score: r.score };
   });
+}
+
+const RUNTIME_INDEX_PATH = path.resolve(process.cwd(), 'data/vectra');
+
+let runtimeIndexPromise: Promise<LocalIndex> | null = null;
+
+/**
+ * Returns the runtime vectra index, loading it on first call.
+ * Subsequent calls return the cached instance.
+ *
+ * Hard-fails (rejects) if the index doesn't exist on disk —
+ * we don't want to silently degrade to non-RAG behavior.
+ */
+export function getRuntimeIndex(): Promise<LocalIndex> {
+  if (!runtimeIndexPromise) {
+    runtimeIndexPromise = openOrThrow();
+  }
+  return runtimeIndexPromise;
+}
+
+async function openOrThrow(): Promise<LocalIndex> {
+  const index = new LocalIndex(RUNTIME_INDEX_PATH);
+  if (!(await index.isIndexCreated())) {
+    throw new Error(
+      `Vectra index missing at ${RUNTIME_INDEX_PATH}/. Did you run 'npm run build:kb' and commit data/vectra/?`,
+    );
+  }
+  return index;
 }

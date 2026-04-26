@@ -4,7 +4,8 @@ import {
 } from 'discord.js';
 import { getGameForChannel, listMappedChannels } from '../config/channels.js';
 import { complete } from '../llm/anthropic.js';
-import { buildSystemPrompt } from '../llm/prompts.js';
+import { buildSystemPromptWithContext } from '../llm/prompts.js';
+import { retrieve } from '../rag/query.js';
 import type { Game } from '../types.js';
 
 export const data = new SlashCommandBuilder()
@@ -35,7 +36,6 @@ export async function execute(
   await interaction.deferReply();
 
   const prompt = interaction.options.getString('prompt', true);
-  // Cast: addChoices() above constrains this to Game, but Discord's typings widen to string.
   const gameOverride = interaction.options.getString('game') as Game | null;
   const game = gameOverride ?? getGameForChannel(interaction.channelId);
 
@@ -44,13 +44,13 @@ export async function execute(
     return;
   }
 
-  const systemPrompt = buildSystemPrompt(game);
-
   try {
+    const chunks = await retrieve(prompt, { game });
+    const systemPrompt = buildSystemPromptWithContext(game, chunks);
     const answer = await complete(systemPrompt, prompt);
     await interaction.editReply(truncateForDiscord(answer));
   } catch (err) {
-    console.error('[/zz] anthropic call failed:', err);
+    console.error('[/zz] handler failed:', err);
     await interaction.editReply(
       "Couldn't get an answer this time. Try again in a sec.",
     );

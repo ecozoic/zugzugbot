@@ -9,11 +9,11 @@ Multi-game: WoW, Diablo 4, FF14. The bot picks which game's
 knowledge to draw from based on the channel the question was
 asked in.
 
-**Status:** v2 rebuild — Phases 1, 2, and 3 complete. Slash
-command + Anthropic LLM + KB build pipeline are all in place.
-Phase 4 (wire RAG retrieval into the slash command) is the next
-piece of work; until it lands, `/zz` answers from Claude
-Sonnet's training data without grounding.
+**Status:** v2 rebuild — Phases 1-4 complete. `/zz` answers
+from the hand-authored KB via Voyage embeddings + vectra
+retrieval, scoped to whichever game the channel is mapped to.
+Phase 5 is the open-ended "expand the KB + tune retrieval"
+phase.
 
 ## Tech stack
 
@@ -198,7 +198,7 @@ re-registration.
 - **Phase 1** ✅ TypeScript scaffold + Discord client + stub `/zz`
 - **Phase 2** ✅ Anthropic SDK wired into `/zz` (no RAG yet)
 - **Phase 3** ✅ KB build pipeline (chunker + Voyage embed + vectra store + seed content)
-- **Phase 4** Wire RAG into `/zz` with channel-game scoping
+- **Phase 4** ✅ Wire RAG into `/zz` with channel-game scoping
 - **Phase 5** Expand KB to comprehensive coverage; tune chunking + retrieval
 
 Phase plans live under `.claude/plans/`.

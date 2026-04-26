@@ -1,4 +1,5 @@
 import type { Game } from '../types.js';
+import type { SearchResult } from '../rag/store.js';
 
 const GAME_NAMES: Record<Game, string> = {
   wow: 'World of Warcraft',
@@ -7,14 +8,10 @@ const GAME_NAMES: Record<Game, string> = {
 };
 
 /**
- * Build the system prompt for a question about a specific game.
- *
- * Phase 2: just frames the bot's role + game scope. No retrieved
- * context yet — the model answers from its training data.
- *
- * Phase 4 will replace this with `buildSystemPromptWithContext`
- * below, which adds an "answer only from the provided context"
- * instruction once we have RAG retrieval wired up.
+ * System prompt for a question about a specific game with
+ * NO retrieved context. Phase 4 still uses this when retrieval
+ * returns 0 chunks — the model knows to say "I don't have info"
+ * because of the explicit instruction.
  */
 export function buildSystemPrompt(game: Game): string {
   const name = GAME_NAMES[game];
@@ -27,28 +24,41 @@ export function buildSystemPrompt(game: Game): string {
 }
 
 /**
- * Phase 4 will use this. Stubbed here so the shape is in place
- * and Phase 4's diff is small.
+ * System prompt for a RAG-grounded question. Embeds the
+ * retrieved chunks as labeled sources and instructs the model
+ * to answer ONLY from them.
+ *
+ * If contextChunks is empty (retrieval found nothing matching
+ * the query), returns the base prompt — the model will say
+ * "I don't have info" per the no-fabrication instruction in
+ * buildSystemPrompt.
  */
 export function buildSystemPromptWithContext(
   game: Game,
-  contextChunks: string[],
+  contextChunks: SearchResult[],
 ): string {
-  const base = buildSystemPrompt(game);
   if (contextChunks.length === 0) {
-    return base;
+    return buildSystemPrompt(game);
   }
-  const contextBlock = contextChunks
-    .map((c, i) => `[Source ${i + 1}]\n${c}`)
+  const name = GAME_NAMES[game];
+  const sourcesBlock = contextChunks
+    .map((c, i) => {
+      const label =
+        c.metadata.heading_path && c.metadata.heading_path !== '(intro)'
+          ? `${c.metadata.source_file} → ${c.metadata.heading_path}`
+          : c.metadata.source_file;
+      return `[Source ${i + 1}: ${label}]\n${c.text}`;
+    })
     .join('\n\n');
+
   return [
-    base,
-    '',
-    'Answer using ONLY the information in the sources below.',
-    "If the sources don't cover the question, say so — do not fall back to general knowledge.",
-    '',
-    '<sources>',
-    contextBlock,
-    '</sources>',
+    `You are a knowledgeable ${name} expert helping friends in a Discord chat.`,
+    `Answer the user's question using ONLY the information in the sources below.`,
+    `If the sources don't directly address the question, say so plainly — do not fall back to general knowledge or make assumptions.`,
+    `Keep answers concise (a few short paragraphs at most).`,
+    ``,
+    `<sources>`,
+    sourcesBlock,
+    `</sources>`,
   ].join('\n');
 }
