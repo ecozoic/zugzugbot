@@ -1,5 +1,5 @@
 import matter from 'gray-matter';
-import type { Game } from '../types.js';
+import { GAMES, type Game } from '../types.js';
 
 export interface Chunk {
   text: string;
@@ -20,8 +20,6 @@ export interface ChunkMetadata {
 const TARGET_WORDS = 350; // ~500 tokens for English (1 token ≈ 0.7 words)
 const MIN_WORDS = 35; // ~50 tokens; below this drop the chunk
 const SLACK_FACTOR = 1.3; // don't split a section that's only modestly oversized
-
-const GAMES: readonly Game[] = ['wow', 'diablo', 'ff14'];
 
 /**
  * Pure function: markdown string + filename → array of embeddable chunks.
