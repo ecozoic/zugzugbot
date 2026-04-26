@@ -1,0 +1,23 @@
+---
+game: wow
+kind: ability
+spell_id: 381885
+spell_name: Heavy Hitter
+spell_name_normalized: heavy-hitter
+class: rogue
+specs: ["outlaw"]
+source_type: spec_talent
+hero_tree: ~
+cast_time: Passive
+range: ~
+cooldown: ~
+power_cost: ~
+icon_url: "https://render.worldofwarcraft.com/us/icons/56/spell_shadow_ritualofsacrifice.jpg"
+synced_from: blizzard-game-data-api
+synced_at: "2026-04-26T21:54:48.418Z"
+patch: "12.0.5"
+---
+
+# Heavy Hitter (Rogue)
+
+Attacks that generate combo points deal 10% increased damage.

@@ -1,0 +1,23 @@
+---
+game: wow
+kind: ability
+spell_id: 1271540
+spell_name: Limb from Limb
+spell_name_normalized: limb-from-limb
+class: druid
+specs: ["balance", "feral", "guardian", "restoration"]
+source_type: spec_talent
+hero_tree: druid-of-the-claw
+cast_time: Passive
+range: ~
+cooldown: ~
+power_cost: ~
+icon_url: "https://render.worldofwarcraft.com/us/icons/56/artifactability_feraldruid_ashamanesbite.jpg"
+synced_from: blizzard-game-data-api
+synced_at: "2026-04-26T21:54:48.418Z"
+patch: "12.0.5"
+---
+
+# Limb from Limb (Druid)
+
+Your auto-attacks are 30% more likely to make your next Maul become Ravage.

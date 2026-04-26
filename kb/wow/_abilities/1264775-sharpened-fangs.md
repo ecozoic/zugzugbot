@@ -1,0 +1,23 @@
+---
+game: wow
+kind: ability
+spell_id: 1264775
+spell_name: Sharpened Fangs
+spell_name_normalized: sharpened-fangs
+class: hunter
+specs: ["beast mastery", "marksmanship", "survival"]
+source_type: spec_talent
+hero_tree: pack-leader
+cast_time: Passive
+range: ~
+cooldown: ~
+power_cost: ~
+icon_url: "https://render.worldofwarcraft.com/us/icons/56/inv_misc_monsterfang_02.jpg"
+synced_from: blizzard-game-data-api
+synced_at: "2026-04-26T21:54:48.418Z"
+patch: "12.0.5"
+---
+
+# Sharpened Fangs (Hunter)
+
+Your mastery is increased by 3%.

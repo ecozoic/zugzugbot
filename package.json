@@ -13,6 +13,7 @@
     "dev": "tsx watch src/index.ts",
     "register": "tsx scripts/register-commands.ts",
     "build:kb": "tsx scripts/build-kb.ts",
+    "sync:blizz:abilities": "tsx scripts/sync-blizz-abilities.ts",
     "lint": "eslint src scripts",
     "format": "prettier --write src scripts",
     "format:check": "prettier --check src scripts",

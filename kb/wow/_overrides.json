@@ -1,0 +1,5 @@
+{
+  "paladin": [
+    { "spell_id": 35395, "specs": ["holy", "protection", "retribution"], "source_type": "spec_baseline" }
+  ]
+}

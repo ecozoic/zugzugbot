@@ -1,0 +1,23 @@
+---
+game: wow
+kind: ability
+spell_id: 1276809
+spell_name: Ravenholdt Mint
+spell_name_normalized: ravenholdt-mint
+class: rogue
+specs: ["assassination", "outlaw", "subtlety"]
+source_type: spec_talent
+hero_tree: fatebound
+cast_time: Passive
+range: ~
+cooldown: ~
+power_cost: ~
+icon_url: "https://render.worldofwarcraft.com/us/icons/56/inv_misc_coin_02.jpg"
+synced_from: blizzard-game-data-api
+synced_at: "2026-04-26T21:54:48.418Z"
+patch: "12.0.5"
+---
+
+# Ravenholdt Mint (Rogue)
+
+Flipping Heads increases damage by an additional 4%. Damage dealt by flipping Tails is increased by 12%.

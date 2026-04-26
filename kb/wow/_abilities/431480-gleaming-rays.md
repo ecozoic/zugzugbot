@@ -1,0 +1,23 @@
+---
+game: wow
+kind: ability
+spell_id: 431480
+spell_name: Gleaming Rays
+spell_name_normalized: gleaming-rays
+class: paladin
+specs: ["holy", "protection", "retribution"]
+source_type: spec_talent
+hero_tree: herald-of-the-sun
+cast_time: Passive
+range: ~
+cooldown: ~
+power_cost: ~
+icon_url: "https://render.worldofwarcraft.com/us/icons/56/spell_priest_powerword.jpg"
+synced_from: blizzard-game-data-api
+synced_at: "2026-04-26T21:54:48.418Z"
+patch: "12.0.5"
+---
+
+# Gleaming Rays (Paladin)
+
+Your Holy Power spenders deal 3% additional damage and healing.

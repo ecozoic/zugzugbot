@@ -1,0 +1,23 @@
+---
+game: wow
+kind: ability
+spell_id: 1240262
+spell_name: Meteor Storm
+spell_name_normalized: meteor-storm
+class: druid
+specs: ["balance"]
+source_type: spec_talent
+hero_tree: ~
+cast_time: Passive
+range: ~
+cooldown: ~
+power_cost: ~
+icon_url: "https://render.worldofwarcraft.com/us/icons/56/spell_arcane_starfire.jpg"
+synced_from: blizzard-game-data-api
+synced_at: "2026-04-26T21:54:48.418Z"
+patch: "12.0.5"
+---
+
+# Meteor Storm (Druid)
+
+Starfall deals its damage 100% faster.

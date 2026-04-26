@@ -1,0 +1,23 @@
+---
+game: wow
+kind: ability
+spell_id: 384027
+spell_name: Divine Resonance
+spell_name_normalized: divine-resonance
+class: paladin
+specs: ["retribution"]
+source_type: class_talent
+hero_tree: ~
+cast_time: Passive
+range: ~
+cooldown: ~
+power_cost: ~
+icon_url: "https://render.worldofwarcraft.com/us/icons/56/ability_mount_goatmountwhite.jpg"
+synced_from: blizzard-game-data-api
+synced_at: "2026-04-26T21:54:48.418Z"
+patch: "12.0.5"
+---
+
+# Divine Resonance (Paladin)
+
+After casting Divine Toll, you instantly cast Holy Shock every 5 sec for 15 sec.

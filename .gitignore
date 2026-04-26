@@ -3,3 +3,6 @@ dist/
 .env
 .env.local
 data/vectra.json
+kb/.obsidian/
+.claude/settings.local.json
+.claude/worktrees/

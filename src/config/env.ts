@@ -8,6 +8,8 @@ const schema = z.object({
   CHANNEL_GAME_MAP: z.string().optional(), // JSON; parsed in channels.ts
   ANTHROPIC_API_KEY: z.string().min(1).startsWith('sk-ant-'),
   VOYAGE_API_KEY: z.string().min(1).startsWith('pa-'),
+  BLIZZARD_CLIENT_ID: z.string().min(1).optional(),
+  BLIZZARD_CLIENT_SECRET: z.string().min(1).optional(),
 });
 
 export type Env = z.infer<typeof schema>;
