@@ -14,7 +14,7 @@ cooldown: ~
 power_cost: ~
 icon_url: "https://render.worldofwarcraft.com/us/icons/56/inv_sword_2h_ebonblade_b_01_red.jpg"
 synced_from: blizzard-game-data-api
-synced_at: "2026-04-26T21:54:48.418Z"
+synced_at: "2026-04-27T03:20:28.706Z"
 patch: "12.0.5"
 ---
 

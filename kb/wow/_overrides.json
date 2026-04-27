@@ -1,5 +1,21 @@
 {
   "paladin": [
-    { "spell_id": 35395, "specs": ["holy", "protection", "retribution"], "source_type": "spec_baseline" }
+    { "spell_id": 35395, "specs": ["retribution"], "source_type": "spec_baseline" },
+    { "spell_id": 20271, "specs": ["retribution"], "source_type": "spec_baseline" },
+    { "spell_id": 85256, "specs": ["retribution"], "source_type": "spec_baseline" },
+    { "spell_id": 26573, "specs": ["retribution"], "source_type": "spec_baseline" },
+    { "spell_id": 404834, "specs": ["retribution"], "source_type": "spec_baseline" },
+    { "spell_id": 498, "specs": ["retribution"], "source_type": "spec_baseline" },
+    { "spell_id": 642, "specs": ["retribution"], "source_type": "spec_baseline" },
+    { "spell_id": 853, "specs": ["retribution"], "source_type": "spec_baseline" },
+    { "spell_id": 391054, "specs": ["retribution"], "source_type": "spec_baseline" },
+    { "spell_id": 7328, "specs": ["retribution"], "source_type": "spec_baseline" },
+    { "spell_id": 85673, "specs": ["retribution"], "source_type": "spec_baseline" },
+    { "spell_id": 19750, "specs": ["retribution"], "source_type": "spec_baseline" },
+    { "spell_id": 53600, "specs": ["retribution"], "source_type": "spec_baseline" },
+    { "spell_id": 62124, "specs": ["retribution"], "source_type": "spec_baseline" },
+    { "spell_id": 267316, "specs": ["retribution"], "source_type": "spec_baseline" },
+    { "spell_id": 404752, "specs": ["retribution"], "source_type": "spec_baseline" },
+    { "spell_id": 5502, "specs": ["retribution"], "source_type": "spec_baseline" }
   ]
 }

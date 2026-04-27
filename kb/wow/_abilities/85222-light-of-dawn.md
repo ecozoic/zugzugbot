@@ -14,7 +14,7 @@ cooldown: ~
 power_cost: "3 Holy Power\n180 Mana"
 icon_url: "https://render.worldofwarcraft.com/us/icons/56/spell_paladin_lightofdawn.jpg"
 synced_from: blizzard-game-data-api
-synced_at: "2026-04-26T21:54:48.418Z"
+synced_at: "2026-04-27T03:20:28.706Z"
 patch: "12.0.5"
 ---
 

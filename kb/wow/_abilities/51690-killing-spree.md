@@ -14,7 +14,7 @@ cooldown: "3 min cooldown"
 power_cost: "45 Energy\n0 Combo Points"
 icon_url: "https://render.worldofwarcraft.com/us/icons/56/inv_112_rogue_betweentheeyes.jpg"
 synced_from: blizzard-game-data-api
-synced_at: "2026-04-26T21:54:48.418Z"
+synced_at: "2026-04-27T03:20:28.706Z"
 patch: "12.0.5"
 ---
 
