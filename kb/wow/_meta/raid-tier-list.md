@@ -460,7 +460,7 @@ DPS:
 2. Frost Mage — 111560 DPS (n=100)
 3. Elemental Shaman — 100247 DPS (n=100)
 4. Unholy Death Knight — 99800 DPS (n=100)
-5. BeastMastery Hunter — 99306 DPS (n=100)
+5. Beast Mastery Hunter — 99306 DPS (n=100)
 
 Healers:
 1. Discipline Priest — 91665 HPS (n=100)
@@ -671,7 +671,7 @@ Tanks:
 DPS:
 1. Unholy Death Knight — 98419 DPS (n=100)
 2. Retribution Paladin — 98205 DPS (n=100)
-3. BeastMastery Hunter — 95400 DPS (n=100)
+3. Beast Mastery Hunter — 95400 DPS (n=100)
 4. Demonology Warlock — 95391 DPS (n=100)
 5. Survival Hunter — 94288 DPS (n=100)
 

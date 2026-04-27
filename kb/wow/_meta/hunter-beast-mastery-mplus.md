@@ -13,7 +13,7 @@ zone_id: 47
 zone_name: Mythic+ Season 1
 ---
 
-# BeastMastery Hunter — Mythic+ Meta (12.0.5)
+# Beast Mastery Hunter — Mythic+ Meta (12.0.5)
 
 ## Hero Tree
 

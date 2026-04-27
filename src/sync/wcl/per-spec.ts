@@ -182,7 +182,7 @@ export function renderPerSpecMd(args: RenderArgs): string {
   const { spec, contentType, zoneId, zoneName, patch, syncedAt, snapshot } =
     args;
   const className = titleCaseSlug(spec.classSlug);
-  const specTitle = capitalize(spec.specName);
+  const specTitle = titleCaseSlug(spec.specSlug);
   const headerLabel =
     contentType === 'raid' ? 'Mythic Raid Meta' : 'Mythic+ Meta';
 

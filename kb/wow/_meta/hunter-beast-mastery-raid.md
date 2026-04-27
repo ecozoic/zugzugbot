@@ -13,7 +13,7 @@ zone_id: 46
 zone_name: VS / DR / MQD
 ---
 
-# BeastMastery Hunter — Mythic Raid Meta (12.0.5)
+# Beast Mastery Hunter — Mythic Raid Meta (12.0.5)
 
 ## Hero Tree
 

@@ -8,7 +8,7 @@ import {
   type RaidDifficulty,
 } from './rankings.js';
 import { SPECS, type SpecEntry, type WclRole } from './specs.js';
-import { capitalize, renderFrontmatter, titleCaseSlug } from './write.js';
+import { renderFrontmatter, titleCaseSlug } from './write.js';
 
 export const META_DIR = 'kb/wow/_meta';
 
@@ -348,7 +348,7 @@ function renderRoleSections(rankings: SpecRanking[], topN: number): string[] {
     for (const r of filtered) {
       const flag = r.lowSample ? ' (low sample)' : '';
       lines.push(
-        `${i}. ${capitalize(r.spec.specName)} ${titleCaseSlug(r.spec.classSlug)} — ${r.median.toFixed(0)} ${r.spec.metric.toUpperCase()} (n=${r.count})${flag}`,
+        `${i}. ${titleCaseSlug(r.spec.specSlug)} ${titleCaseSlug(r.spec.classSlug)} — ${r.median.toFixed(0)} ${r.spec.metric.toUpperCase()} (n=${r.count})${flag}`,
       );
       i++;
     }
