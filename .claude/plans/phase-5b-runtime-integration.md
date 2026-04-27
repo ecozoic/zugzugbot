@@ -160,6 +160,63 @@ need to update `chunk.ts` to default `kind: 'guide'` for any
 non-synced chunk (and have the sync write `kind: 'ability'` into the
 ability frontmatter explicitly so the chunker's `kind` passes through).
 
+### 3.1 Bold-name extraction rules
+
+Both stage-2 resolution (§3) and build-time validation (§5) parse
+`**bold**` runs out of guide chunks. The same parser is used in both
+places — define it once.
+
+Authors use bold for two distinct purposes in guide content:
+
+- **Spell / ability references** — `**Crusader Strike**`,
+  `**Mastery: Highlord's Judgment**`, `**Light's Judgment**`. These
+  must resolve via `spell-index.json`.
+- **Sub-labels / emphasis** — list-item leads like `**Templar:**`,
+  `**Critical Strike:**`, `**Haste:**`, hero-tree headers, stat
+  category labels, etc. These are typographic, not references.
+
+**Disambiguation rule (trailing-colon heuristic):**
+
+```
+If the bolded text ends with ':' → sub-label, skip resolution.
+Otherwise → spell reference, resolve via spell-index.
+```
+
+Worked examples:
+
+| Bold text                          | Treated as     | Why                                   |
+| ---------------------------------- | -------------- | ------------------------------------- |
+| `**Crusader Strike**`              | spell ref      | no trailing `:`                       |
+| `**Mastery: Highlord's Judgment**` | spell ref      | colon mid-bold, more text follows     |
+| `**Templar:**`                     | sub-label      | bold ends in `:`                      |
+| `**Critical Strike:**`             | sub-label      | bold ends in `:` (despite name match) |
+| `**Hero Trees:**`                  | sub-label      | bold ends in `:`                      |
+
+Implementation:
+
+```ts
+function extractSpellReferences(text: string): string[] {
+  const matches = text.matchAll(/\*\*([^*]+?)\*\*/g);
+  const refs: string[] = [];
+  for (const m of matches) {
+    const inner = m[1].trim();
+    if (inner.endsWith(':')) continue; // sub-label, skip
+    refs.push(inner);
+  }
+  return refs;
+}
+```
+
+Note: `**Critical Strike:**` (the stat sub-label) and a hypothetical
+spell named "Critical Strike" would collide if an author ever wrote
+the spell with a trailing colon. Phase 5b assumes this is acceptable
+since spell references in prose virtually never end with a colon
+(they're normally followed by punctuation or more prose, not
+terminated by `:`).
+
+Test: feed a synthetic chunk with all four cases above; assert exactly
+two refs returned (`Crusader Strike`, `Mastery: Highlord's Judgment`).
+
 ## 4. System prompt extension
 
 `src/llm/prompts.ts` — extend `buildSystemPromptWithContext` to
@@ -185,9 +242,10 @@ those as authoritative for the current patch."
 
 ## 5. Build-time validation (in `build:kb`)
 
-After chunking guide files, scan their text for `**bold names**`.
-For each, attempt resolution against the loaded spell-index using
-the chunk's `class` and `spec` frontmatter.
+After chunking guide files, scan their text for `**bold names**`
+using the extraction rule from §3.1 (trailing-colon heuristic skips
+sub-labels). For each remaining ref, attempt resolution against the
+loaded spell-index using the chunk's `class` and `spec` frontmatter.
 
 - Resolved → no action
 - Unresolved → log warning at ERROR level + add to a build-time
@@ -221,5 +279,7 @@ Implementation lives in `scripts/build-kb.ts` or a new
       it for spell mechanics in answers
 - [ ] Build-time validation catches unresolved bold names; fails
       build with actionable error
+- [ ] Bold-name extractor skips trailing-colon sub-labels (§3.1) and
+      is shared between stage-2 retrieval and build-time validation
 - [ ] Existing tests pass; new tests cover two-stage retrieval +
       validation + spec-scoped index resolution
