@@ -6,3 +6,5 @@ data/vectra.json
 kb/.obsidian/
 .claude/settings.local.json
 .claude/worktrees/
+.claude/scheduled_tasks.lock
+tmp/
